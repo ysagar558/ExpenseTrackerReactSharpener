@@ -45,3 +45,15 @@
   font-size: 14px;
   margin-bottom: 10px;
 }
+
+.link {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #0a8cff;
+  cursor: pointer;
+}
+
+/* Hover effect */
+.link:hover {
+  text-decoration: underline;
+}

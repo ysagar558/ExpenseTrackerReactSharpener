@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import Login from "./Login";
 import './Signup.css';
 
 
 const API_KEY = "AIzaSyB0e7Z_UOBldjUY0i1y3N4i8t_odTfBaog";
 
-const Signup = () => {
+const Signup = ({goToLogin}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -46,7 +47,7 @@ const Signup = () => {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error?.message);   
+                throw new Error(data.error?.message);
             }
 
             console.log("User has successfully signed up.");
@@ -61,6 +62,7 @@ const Signup = () => {
             setLoading(false);
         }
     };
+   
 
     return (
         <div className="signup-container">
@@ -93,6 +95,9 @@ const Signup = () => {
                 <button type="submit" disabled={!isFormValid || loading}>
                     {loading ? "Signing up..." : "Sign up"}
                 </button>
+                <p className="link" onClick={goToLogin}>
+                    Have an account? Login
+                </p>
             </form>
         </div>
     );
