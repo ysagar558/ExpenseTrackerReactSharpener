@@ -2,13 +2,19 @@ import React,{useState} from 'react';
 import './App.css';
 import Signup from './components/Signup';
 import Login from './components/Login';
+import Welcome from './components/Welcome';
+import CompleteProfile from './components/CompleteProfile';
 
 
 function App() {
 const [page, setPage] = useState("signup"); // signup | login | welcome
 
   if (page === "welcome") {
-    return <h1 style={{ textAlign: "center" }}>Welcome to Expense Tracker</h1>;
+    return <Welcome goToProfile={() => setPage("profile")} />;
+  }
+
+  if (page === "profile") {
+    return <CompleteProfile goBack={() => setPage("welcome")} />;
   }
 
 

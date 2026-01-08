@@ -1,0 +1,40 @@
+.welcome-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.profile-warning {
+  background: #f3e4e4;
+  padding: 8px 15px;
+  border-radius: 20px;
+}
+
+.profile-warning span {
+  color: blue;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.quote {
+  margin: 20px;
+}
+
+.profile-container {
+  padding: 30px;
+}
+
+.form-row {
+  margin-bottom: 15px;
+}
+
+.update-btn {
+  background: #b56565;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+}
+
+.cancel-btn {
+  margin-left: 10px;
+}
