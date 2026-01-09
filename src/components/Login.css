@@ -1,5 +1,5 @@
 /* Center the login card */
-.auth-container {
+.auth-container-login {
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -7,7 +7,7 @@
 }
 
 /* Card */
-.card {
+.card-login {
     width: 340px;
     padding: 25px;
     border: 1px solid #ddd;
@@ -17,13 +17,13 @@
 }
 
 /* Heading */
-.card h2 {
+.card-login h2 {
     margin-bottom: 20px;
     font-weight: 500;
 }
 
 /* Inputs */
-.card input {
+.card-login input {
     width: 100%;
     padding: 12px;
     margin-bottom: 15px;
@@ -35,12 +35,12 @@
 }
 
 /* Placeholder color */
-.card input::placeholder {
+.card-login input::placeholder {
     color: white;
 }
 
 /* Login Button */
-.card button {
+.card-login button {
     width: 100%;
     padding: 12px;
     border: none;
@@ -52,7 +52,7 @@
 }
 
 /* Disabled Button */
-.card button:disabled {
+.card-login button:disabled {
     background-color: #a7d2ff;
     cursor: not-allowed;
 }

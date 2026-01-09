@@ -4,6 +4,7 @@ import Signup from './components/Signup';
 import Login from './components/Login';
 import Welcome from './components/Welcome';
 import CompleteProfile from './components/CompleteProfile';
+import ForgotPassword from './components/ForgotPassword';
 
 
 function App() {
@@ -26,9 +27,11 @@ const [page, setPage] = useState("signup"); // signup | login | welcome
       {page === "login" && (
         <Login
           goToSignup={() => setPage("signup")}
+          goToForgotPassword={()=>setPage("forgot")}
           onLoginSuccess={() => setPage("welcome")}
         />
       )}
+      {page==="forgot" && (<ForgotPassword goToLogin={()=>setPage("login")}/>)}
    </>
   );
 }

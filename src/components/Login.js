@@ -3,7 +3,7 @@ import './Login.css';
 
 const API_KEY = "AIzaSyB0e7Z_UOBldjUY0i1y3N4i8t_odTfBaog";
 
-const Login = ({goToSignup,onLoginSuccess}) => {
+const Login = ({goToSignup,onLoginSuccess,goToForgotPassword}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -36,7 +36,6 @@ const Login = ({goToSignup,onLoginSuccess}) => {
       localStorage.setItem("token", data.idToken);
       localStorage.setItem("email", data.email);
       onLoginSuccess();
-      // onLoginSuccess && onLoginSuccess();
 
      
     } catch (err) {
@@ -45,8 +44,8 @@ const Login = ({goToSignup,onLoginSuccess}) => {
   };
 
   return (
-    <div className="auth-container">
-    <form onSubmit={loginHandler} className="card">
+    <div className="auth-container-login">
+    <form onSubmit={loginHandler} className="card-login">
       <h2>Login</h2>
 
       <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
@@ -56,7 +55,7 @@ const Login = ({goToSignup,onLoginSuccess}) => {
 
       <button disabled={!email || !password}>Login</button>
 
-      <p className="linkp">Forgot Password</p>
+      <p className="linkp" onClick={goToForgotPassword}>Forgot Password</p>
 
       <p className="link" onClick={goToSignup}>
         Don’t have an account? Sign up
