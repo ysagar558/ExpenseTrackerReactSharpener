@@ -28,6 +28,20 @@
   margin-bottom: 15px;
 }
 
+.verify-btn {
+  background-color: #cc9beb;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.verify-btn:hover {
+  opacity: 0.9;
+}
+
+
 .update-btn {
   background: #b56565;
   color: white;
