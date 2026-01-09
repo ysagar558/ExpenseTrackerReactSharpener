@@ -10,7 +10,9 @@ function App() {
 const [page, setPage] = useState("signup"); // signup | login | welcome
 
   if (page === "welcome") {
-    return <Welcome goToProfile={() => setPage("profile")} />;
+    return <Welcome goToProfile={() => setPage("profile")} 
+    onLogout={()=>setPage("login")}
+    />;
   }
 
   if (page === "profile") {

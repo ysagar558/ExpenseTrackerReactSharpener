@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './Welcome.css';
+import Login from './Login';
 
 const API_KEY = "AIzaSyB0e7Z_UOBldjUY0i1y3N4i8t_odTfBaog";
 
-const Welcome = ({ goToProfile }) => {
+const Welcome = ({ goToProfile,onLogout }) => {
     const [emailVerified, setEmailVerified] = useState(false);
     const token = localStorage.getItem("token");
+    const [logout,setLogout]=useState(false);
 
     useEffect(() => {
         const checkVerificationStatus = async () => {
@@ -19,7 +21,7 @@ const Welcome = ({ goToProfile }) => {
             );
 
             const data = await response.json();
-            const user = data.users[0];
+            const user = data;
 
             setEmailVerified(user.emailVerified);
         };
@@ -51,6 +53,19 @@ const Welcome = ({ goToProfile }) => {
         }
     };
 
+    const logoutHandler=()=>{
+        localStorage.removeItem('token');
+        localStorage.removeItem('email');
+        // setLogout(true);
+        onLogout();
+    }
+
+    
+// if(logout){
+//     return (<Login/>)
+// }
+    
+
 
     return (
         <>
@@ -62,6 +77,10 @@ const Welcome = ({ goToProfile }) => {
                         Verify Email
                     </button>
                 )}
+
+                <button className="logout-btn" onClick={logoutHandler}>
+                    Logout
+                </button>
 
 
                 <div className="profile-warning">

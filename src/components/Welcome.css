@@ -41,6 +41,19 @@
   opacity: 0.9;
 }
 
+.logout-btn {
+  background-color: #ac371a;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  opacity: 0.9;
+}
+
 
 .update-btn {
   background: #b56565;

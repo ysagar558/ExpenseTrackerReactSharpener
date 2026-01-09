@@ -32,10 +32,11 @@ const Login = ({goToSignup,onLoginSuccess}) => {
         throw new Error("Invalid email or password");
       }
 
-      // ✅ STORE TOKEN
+      
       localStorage.setItem("token", data.idToken);
       localStorage.setItem("email", data.email);
       onLoginSuccess();
+      // onLoginSuccess && onLoginSuccess();
 
      
     } catch (err) {
