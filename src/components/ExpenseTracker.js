@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./ExpenseTracker.css";
+
+const FIREBASE_URL = "https://appointment-booking-syst-e0829-default-rtdb.firebaseio.com/expenses.json";
 
 const ExpenseTracker = () => {
     const [amount, setAmount] = useState("");
@@ -7,22 +9,63 @@ const ExpenseTracker = () => {
     const [category, setCategory] = useState("");
     const [expenses, setExpenses] = useState([]);
 
-    const submitHandler = (e) => {
+    useEffect(() => {
+        const fetchExpenses = async () => {
+            try {
+                const response = await fetch(FIREBASE_URL);
+                const data = await response.json();
+
+                if (data) {
+                    const loadedExpenses = Object.keys(data).map((key) => ({
+                        id: key,
+                        ...data[key],
+                    }));
+
+                    setExpenses(loadedExpenses);
+                }
+            } catch (err) {
+                console.error("Failed to fetch expenses");
+            }
+        };
+
+        fetchExpenses();
+    }, []);
+
+    const submitHandler = async (e) => {
         e.preventDefault();
 
         const newExpense = {
-            id: Date.now(),
             amount,
             description,
             category,
         };
 
-        setExpenses((prev) => [...prev, newExpense]);
+        try {
+            const response = await fetch(FIREBASE_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newExpense),
+            });
 
-        // clear fields
-        setAmount("");
-        setDescription("");
-        setCategory("");
+            if (!response.ok) {
+                throw new Error("Failed to add expense");
+            }
+
+            const data = await response.json();
+
+            setExpenses((prev) => [
+                ...prev,
+                { id: data.name, ...newExpense },
+            ]);
+
+            // Clear form
+            setAmount("");
+            setDescription("");
+            setCategory("");
+
+        } catch (err) {
+            alert(err.message);
+        }
     };
 
     return (
