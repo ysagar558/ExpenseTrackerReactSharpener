@@ -49,3 +49,17 @@
   border-radius: 5px;
   margin-bottom: 8px;
 }
+
+.edit-btn {
+    background-color: rgb(97, 146, 236);
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.delete-btn {
+    background-color: rgb(165, 20, 9);
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+}

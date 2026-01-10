@@ -1,18 +1,19 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./ExpenseTracker.css";
 
-const FIREBASE_URL = "https://appointment-booking-syst-e0829-default-rtdb.firebaseio.com/expenses.json";
+const BASE_URL = "https://appointment-booking-syst-e0829-default-rtdb.firebaseio.com/expenses";
 
 const ExpenseTracker = () => {
     const [amount, setAmount] = useState("");
     const [description, setDescription] = useState("");
     const [category, setCategory] = useState("");
     const [expenses, setExpenses] = useState([]);
+    const [editingId, setEditingId] = useState(null);
 
     useEffect(() => {
         const fetchExpenses = async () => {
             try {
-                const response = await fetch(FIREBASE_URL);
+                const response = await fetch(`${BASE_URL}.json`);
                 const data = await response.json();
 
                 if (data) {
@@ -34,29 +35,51 @@ const ExpenseTracker = () => {
     const submitHandler = async (e) => {
         e.preventDefault();
 
-        const newExpense = {
+        const expenseData = {
             amount,
             description,
             category,
         };
 
         try {
-            const response = await fetch(FIREBASE_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(newExpense),
-            });
+            //  UPDATE
+            if (editingId) {
+                const response = await fetch(
+                    `${BASE_URL}/${editingId}.json`,
+                    {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(expenseData),
+                    }
+                );
 
-            if (!response.ok) {
-                throw new Error("Failed to add expense");
+                if (!response.ok) throw new Error("Update failed");
+
+                setExpenses((prev) =>
+                    prev.map((exp) =>
+                        exp.id === editingId ? { id: editingId, ...expenseData } : exp
+                    )
+                );
+
+                setEditingId(null);
             }
+            // ADD
+            else {
+                const response = await fetch(`${BASE_URL}.json`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(expenseData),
+                });
 
-            const data = await response.json();
+                if (!response.ok) throw new Error("Add failed");
 
-            setExpenses((prev) => [
-                ...prev,
-                { id: data.name, ...newExpense },
-            ]);
+                const data = await response.json();
+
+                setExpenses((prev) => [
+                    ...prev,
+                    { id: data.name, ...expenseData },
+                ]);
+            }
 
             // Clear form
             setAmount("");
@@ -68,9 +91,36 @@ const ExpenseTracker = () => {
         }
     };
 
+    // DELETE
+    const deleteHandler = async (id) => {
+        try {
+            const response = await fetch(
+                `${BASE_URL}/${id}.json`,
+                { method: "DELETE" }
+            );
+
+            if (!response.ok) throw new Error("Delete failed");
+
+            setExpenses((prev) => prev.filter((exp) => exp.id !== id));
+
+            console.log("Expense successfully deleted");
+
+        } catch (err) {
+            alert(err.message);
+        }
+    };
+
+    // START EDIT
+    const editHandler = (expense) => {
+        setAmount(expense.amount);
+        setDescription(expense.description);
+        setCategory(expense.category);
+        setEditingId(expense.id);
+    };
+
     return (
         <div className="expense-container">
-            <h2>Add Expense</h2>
+            <h2>{editingId ? "Edit Expense" : "Add Expense"}</h2>
 
             <form className="expense-form" onSubmit={submitHandler}>
                 <input
@@ -101,7 +151,7 @@ const ExpenseTracker = () => {
                     <option value="Shopping">Shopping</option>
                 </select>
 
-                <button>Add Expense</button>
+                <button>{editingId ? "Update Expense" : "Add Expense"}</button>
             </form>
 
             <ul className="expense-list">
@@ -110,6 +160,9 @@ const ExpenseTracker = () => {
                         <span>₹{exp.amount}</span>
                         <span>{exp.description}</span>
                         <span>{exp.category}</span>
+
+                        <button onClick={() => editHandler(exp)} className="edit-btn">Edit</button>
+                        <button onClick={() => deleteHandler(exp.id)} className="delete-btn">Delete</button>
                     </li>
                 ))}
             </ul>
