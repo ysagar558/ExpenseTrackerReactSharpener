@@ -49,7 +49,7 @@ const ForgotPassword = ({ goToLogin }) => {
       <form className="card" onSubmit={sendResetLinkHandler}>
         <h2>Reset Password</h2>
 
-        <p>Enter the email with which you have registered</p>
+        <p className="text">Enter the email with which you have registered</p>
 
         <input
           type="email"
