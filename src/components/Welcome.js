@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import {useDispatch} from 'react-redux';
+import { authActions } from '../store/authSlice';
 import './Welcome.css';
 import Login from './Login';
 
 const API_KEY = "AIzaSyB0e7Z_UOBldjUY0i1y3N4i8t_odTfBaog";
 
 const Welcome = ({ goToProfile,onLogout }) => {
+    const dispatch=useDispatch();
     const [emailVerified, setEmailVerified] = useState(false);
     const token = localStorage.getItem("token");
     const [logout,setLogout]=useState(false);
@@ -54,6 +57,7 @@ const Welcome = ({ goToProfile,onLogout }) => {
     };
 
     const logoutHandler=()=>{
+        dispatch(authActions.logout());
         localStorage.removeItem('token');
         localStorage.removeItem('email');
         // setLogout(true);

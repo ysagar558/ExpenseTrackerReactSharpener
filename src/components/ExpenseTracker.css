@@ -63,3 +63,11 @@
     border-radius: 8px;
     cursor: pointer;
 }
+
+.premium-btn {
+  background-color: rgb(238, 241, 14);
+    color: black;
+    border-radius: 8px;
+    padding: 0.5rem 1.5rem;
+    cursor: pointer;
+}

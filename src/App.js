@@ -35,8 +35,6 @@ function App() {
         />
       )}
 
-      
-
       {page === "welcome" && (<>
         <Welcome goToProfile={() => setPage("profile")}
           onLogout={() => setPage("login")}
