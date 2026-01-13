@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import {useDispatch} from 'react-redux';
+import { authActions } from "../store/authSlice";
 import './Login.css';
 
 const API_KEY = "AIzaSyB0e7Z_UOBldjUY0i1y3N4i8t_odTfBaog";
 
 const Login = ({goToSignup,onLoginSuccess,goToForgotPassword}) => {
+  const dispatch=useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -31,6 +34,11 @@ const Login = ({goToSignup,onLoginSuccess,goToForgotPassword}) => {
       if (!response.ok) {
         throw new Error("Invalid email or password");
       }
+
+      dispatch(authActions.login({
+        token:data.idToken,
+        userId:data.localId,
+      }));
 
       
       localStorage.setItem("token", data.idToken);

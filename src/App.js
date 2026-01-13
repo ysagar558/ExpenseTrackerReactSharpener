@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import './App.css';
 import Signup from './components/Signup';
 import Login from './components/Login';
@@ -9,6 +10,7 @@ import ExpenseTracker from './components/ExpenseTracker';
 
 
 function App() {
+  const darkMode=useSelector((state)=>state.theme.darkMode);
   const [page, setPage] = useState("signup"); // signup | login | welcome
 
   // if (page === "welcome") {
@@ -23,7 +25,7 @@ function App() {
 
 
   return (
-    <>
+    <div className={darkMode?'dark':'light'}>
       {page === "signup" && <Signup goToLogin={() => setPage("login")} />}
       {page === "login" && (
         <Login
@@ -41,7 +43,7 @@ function App() {
         />
         <ExpenseTracker /></>)}
       {page === "forgot" && (<ForgotPassword goToLogin={() => setPage("login")} />)}
-    </>
+    </div>
   );
 }
 

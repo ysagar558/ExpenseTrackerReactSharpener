@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { CSVLink } from "react-csv";
 import { useDispatch, useSelector } from "react-redux";
 import { expensesActions } from "../store/expensesSlice";
+import { themeActions } from "../store/themeSlice";
 import "./ExpenseTracker.css";
 
 const BASE_URL =
@@ -11,18 +13,20 @@ const ExpenseTracker = () => {
 
   // Redux state
   const expenses = useSelector((state) => state.expenses.items);
-
+  // const token=useSelector((state)=>state.auth.token);
+const token=localStorage.getItem('token');
   // Local UI state (form-related → should stay local)
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [editingId, setEditingId] = useState(null);
+  const [toggleBtn,setToggleBtn]=useState(false);
 
   // FETCH EXPENSES
   useEffect(() => {
     const fetchExpenses = async () => {
       try {
-        const response = await fetch(`${BASE_URL}.json`);
+        const response = await fetch(`${BASE_URL}.json?auth=${token}`);
         const data = await response.json();
 
         if (data) {
@@ -55,7 +59,7 @@ const ExpenseTracker = () => {
       // UPDATE
       if (editingId) {
         const response = await fetch(
-          `${BASE_URL}/${editingId}.json`,
+          `${BASE_URL}/${editingId}.json?auth=${token}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -76,7 +80,7 @@ const ExpenseTracker = () => {
       }
       // ADD
       else {
-        const response = await fetch(`${BASE_URL}.json`, {
+        const response = await fetch(`${BASE_URL}.json?auth=${token}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(expenseData),
@@ -107,7 +111,7 @@ const ExpenseTracker = () => {
   const deleteHandler = async (id) => {
     try {
       const response = await fetch(
-        `${BASE_URL}/${id}.json`,
+        `${BASE_URL}/${id}.json?auth=${token}`,
         { method: "DELETE" }
       );
 
@@ -127,6 +131,18 @@ const ExpenseTracker = () => {
     setCategory(expense.category);
     setEditingId(expense.id);
   };
+
+  const csvData = expenses.map((exp) => ({
+    Amount: exp.amount,
+    Description: exp.description,
+    Category: exp.category,
+  }));
+
+  const headers = [
+    { label: "Amount", key: "Amount" },
+    { label: "Description", key: "Description" },
+    { label: "Category", key: "Category" },
+  ];
 
   //  PREMIUM LOGIC
   const totalAmount = expenses.reduce(
@@ -174,10 +190,24 @@ const ExpenseTracker = () => {
 
       {/* PREMIUM BUTTON */}
       {totalAmount > 10000 && (
-        <button className="premium-btn">
+        <button className="premium-btn"onClick={()=>{
+          setToggleBtn(true);
+          dispatch(themeActions.toggleTheme());
+        }}>
           Activate Premium
         </button>
       )}
+
+      {toggleBtn&&<button onClick={()=>dispatch(themeActions.toggleTheme())} className="toggle-btn">
+        Toggle Theme</button>};
+
+      {toggleBtn&&<CSVLink
+        data={csvData}
+        headers={headers}
+        filename="expenses.csv"
+        target="_blank"
+        className="csv-btn"
+      >Download Expenses CSV</CSVLink>}
 
       <ul className="expense-list">
         {expenses.map((exp) => (
