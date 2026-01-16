@@ -53,6 +53,7 @@
 .edit-btn {
   background-color: rgb(97, 146, 236);
   color: white;
+  padding: 0.3rem 1rem;
   border-radius: 8px;
   cursor: pointer;
 }
@@ -60,6 +61,7 @@
 .delete-btn {
   background-color: rgb(165, 20, 9);
   color: white;
+  padding: 0.3rem 1rem;
   border-radius: 8px;
   cursor: pointer;
 }
